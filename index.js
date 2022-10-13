@@ -1,8 +1,8 @@
-import HackerrankTestRepository from "./src/repositories/HackerrankTestRepository";
-import TestResultRepository from "./src/repositories/TestResultRepository";
-import UserRepository from "./src/repositories/UserRepository";
-import ExamExerciseHandler from "./src/services/ExamExerciseHandler";
-import * as dotenv from "dotenv";
+const HackerrankTestRepository = require("./dist/src/repositories/HackerrankTestRepository");
+const TestResultRepository = require("./dist/src/repositories/TestResultRepository");
+const UserRepository = require("./dist/src/repositories/UserRepository");
+const ExamExerciseHandler = require("./dist/src/services/ExamExerciseHandler");
+const dotenv = require("dotenv");
 dotenv.config();
 
 const config = {
@@ -24,7 +24,7 @@ const hackerrankTestRepository = new HackerrankTestRepository();
 const testResultRepository = new TestResultRepository();
 const examExerciseHandler = new ExamExerciseHandler(config, userRepository, hackerrankTestRepository, testResultRepository);
 
-const errorHandler = (error: Error) => ({
+const errorHandler = (error) => ({
     statusCode: 500,
     headers: { "Access-Control-Allow-Origin": "*" },
     body: JSON.stringify({ name: error.name, message: error.message })
@@ -35,7 +35,7 @@ const successHandler = () => ({
     headers: { "Access-Control-Allow-Origin": "*" }
 });
 
-export const lambdaHandler = async (event: any, context: any) => {
+module.exports = async (event, context) => {
     console.log(`Event: ${JSON.stringify(event, null, 2)}`);
     console.log(`Context: ${JSON.stringify(context, null, 2)}`);
     return examExerciseHandler.updateExamExerciseState().catch(errorHandler).then(successHandler);
