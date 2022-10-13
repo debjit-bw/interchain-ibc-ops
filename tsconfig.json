@@ -1,11 +1,14 @@
 {
     "compilerOptions": {
+        "target": "es2016",
+        "module": "commonjs",
         "esModuleInterop": true,
         "resolveJsonModule": true,
         "outDir": "./dist",
     },
     "include": [
-        "src/**/*"
+        "src/**/*",
+        "index.ts"
     ],
     "exclude": [
         "node_modules"
