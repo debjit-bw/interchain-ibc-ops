@@ -2,8 +2,8 @@ import HackerrankTest from "../database/models/HackerrankTest";
 import HackerrankTestRepository from "../repositories/HackerrankTestRepository";
 import TestResultRepository from "../repositories/TestResultRepository";
 import UserRepository from "../repositories/UserRepository";
-import StudentIds from "../../samples/student-ids.json";
-import { studentGenerator, StudentInfo } from "../studentGenerator";
+import studentInfos from "../../samples/student-infos.json";
+import { StudentInfo } from "../studentGenerator";
 import { checkOnStudentsInParallel, NodeConfig } from "../studentChecker";
 
 type Config = {
@@ -36,9 +36,6 @@ export default class ExamExerciseHandler {
     async updateExamExerciseState() {
         console.log('[ExamExerciseHandler] update exam exercise state');
 
-        // generate student infos
-        const studentInfos = await studentGenerator(StudentIds);
-        // check students 
         const students = await checkOnStudentsInParallel([this.config.nodeConfig], studentInfos);
 
         return await this.compareAndUpdateResults(students);
@@ -52,8 +49,9 @@ export default class ExamExerciseHandler {
         const testResults = await this.testResultRepository.getAllByTestId(examExercise.testId);
 
         for (let student of students) {
-            console.log(JSON.stringify(student, null, 4))
             if (!student.received) continue;
+
+            console.log(`[ExamExerciseHandler] exam exercise result received for user ${student.studentId.uuid}`);
 
             const user = users.find(user => user.token === student.studentId.uuid);
             const examExerciseResult = testResults.find(result => result.userId === user.id);
