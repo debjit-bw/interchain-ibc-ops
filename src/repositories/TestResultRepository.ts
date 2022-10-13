@@ -28,4 +28,23 @@ export default class TestResultRepository {
             .where('test_id', id)
             .then(data => data.map(item => new TestResult(item.test_result_id, item.user_id, item.test_id, item.test_result, item.date)));
     }
+
+    create(
+        userId: number,
+        testId: number,
+        testResult: number,
+        date: Date
+    ): Promise<TestResult> {
+        console.log(`[TestResultRepository] create test result for test id ${testId} and user ${userId}`);
+
+        const data: any = {
+            user_id: userId,
+            test_id: testId,
+            test_result: testResult,
+            date,
+            created_at: new Date(),
+            updated_at: new Date()
+        }
+        return this.testResults().insert(data);
+    }
 }

@@ -2,13 +2,17 @@ import HackerrankTest from "../database/models/HackerrankTest";
 import HackerrankTestRepository from "../repositories/HackerrankTestRepository";
 import TestResultRepository from "../repositories/TestResultRepository";
 import UserRepository from "../repositories/UserRepository";
+import StudentIds from "../../samples/student-ids.json";
+import { studentGenerator, StudentInfo } from "../studentGenerator";
+import { checkOnStudentsInParallel, NodeConfig } from "../studentChecker";
 
 type Config = {
     examExercise: {
         id: string,
         name: string,
         dueDate?: string
-    }
+    },
+    nodeConfig: NodeConfig
 }
 
 export default class ExamExerciseHandler {
@@ -29,22 +33,33 @@ export default class ExamExerciseHandler {
         this.testResultRepository = testResultRepository;
     }
 
-    async checkExamExerciseState() {
-        console.log('[ExamExerciseHandler] check exam exercise state');
+    async updateExamExerciseState() {
+        console.log('[ExamExerciseHandler] update exam exercise state');
 
+        // generate student infos
+        const studentInfos = await studentGenerator(StudentIds);
+        // check students 
+        const students = await checkOnStudentsInParallel([this.config.nodeConfig], studentInfos);
+
+        await this.updateStudentsResults(students);
+    }
+
+    async updateStudentsResults(students: StudentInfo[]) {
         const users = await this.userRepository.getAll();
-        console.log(users);
-
         const examExercise: HackerrankTest = await this.getExamExercise();
-        console.log(examExercise);
         const testResults = await this.testResultRepository.getAllByTestId(examExercise.testId);
-        console.log(JSON.stringify(testResults));
 
-        // load config
+        for (let student of students) {
+            console.log(JSON.stringify(student, null, 4))
+            if (!student.received) continue;
 
-        // run functions
+            const user = users.find(user => user.token === student.studentId.uuid);
+            const examExerciseResult = testResults.find(result => result.userId === user.id);
 
-        // update db
+            if (!examExerciseResult || examExerciseResult.testResult != 1) {
+                this.testResultRepository.create(user.id, examExercise.testId, 1, new Date());
+            }
+        }
     }
 
     async getExamExercise(): Promise<HackerrankTest> {
