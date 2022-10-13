@@ -2,7 +2,7 @@ import HackerrankTest from "../database/models/HackerrankTest";
 import HackerrankTestRepository from "../repositories/HackerrankTestRepository";
 import TestResultRepository from "../repositories/TestResultRepository";
 import UserRepository from "../repositories/UserRepository";
-import studentInfos from "../../samples/student-infos.json";
+import studentInfos from "../../samples/student-infos-positive.json";
 import { StudentInfo } from "../studentGenerator";
 import { checkOnStudentsInParallel, NodeConfig } from "../studentChecker";
 
@@ -54,6 +54,8 @@ export default class ExamExerciseHandler {
             console.log(`[ExamExerciseHandler] exam exercise result received for user ${student.studentId}`);
 
             const user = users.find(user => user.token === student.studentId);
+            if (!user) continue;
+
             const examExerciseResult = testResults.find(result => result.userId === user.id);
 
             if (!examExerciseResult || examExerciseResult.testResult != 1) {
