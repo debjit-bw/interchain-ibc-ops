@@ -38,7 +38,9 @@ export default class ExamExerciseHandler {
 
         const students = await checkOnStudentsInParallel([this.config.nodeConfig], studentInfos);
 
-        return await this.compareAndUpdateResults(students);
+        console.log('[ExamExerciseHandler] students retrieved', JSON.stringify(students));
+
+        await this.compareAndUpdateResults(students);
     }
 
     async compareAndUpdateResults(students: StudentInfo[]) {
