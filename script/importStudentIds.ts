@@ -12,10 +12,7 @@ async function runAll() {
         .filter((row: string) => row != "")
         .map((row: string) => {
             const values: string[] = row.split(",")
-            return {
-                uuid: values[0],
-                email: values[1],
-            }
+            return values[0]
         })
     console.log(JSON.stringify(extracted, null, 4))
 }

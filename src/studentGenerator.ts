@@ -1,9 +1,6 @@
 import { DirectSecp256k1HdWallet } from "@cosmjs/proto-signing"
 
-export type StudentId = {
-    email: string
-    uuid: string
-}
+export type StudentId = string
 export type StudentInfo = {
     studentId: StudentId
     mnemonic: string

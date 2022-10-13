@@ -51,9 +51,9 @@ export default class ExamExerciseHandler {
         for (let student of students) {
             if (!student.received) continue;
 
-            console.log(`[ExamExerciseHandler] exam exercise result received for user ${student.studentId.uuid}`);
+            console.log(`[ExamExerciseHandler] exam exercise result received for user ${student.studentId}`);
 
-            const user = users.find(user => user.token === student.studentId.uuid);
+            const user = users.find(user => user.token === student.studentId);
             const examExerciseResult = testResults.find(result => result.userId === user.id);
 
             if (!examExerciseResult || examExerciseResult.testResult != 1) {
