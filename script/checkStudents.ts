@@ -1,4 +1,4 @@
-#!/usr/bin/env npx ts-node
+#!/usr/bin/env ts-node
 
 import { config } from "dotenv"
 import getStdin from "../src/stdIn"

@@ -1,4 +1,4 @@
-#!/usr/bin/env npx ts-node
+#!/usr/bin/env ts-node
 
 import getStdin from "../src/stdIn"
 import { StudentInfo } from "../src/studentGenerator"

@@ -7,7 +7,7 @@
 2. To create these ids from a CSV, see an example [here](./samples/student-ids.csv), run something like:
 
     ```sh
-    ./scripts/importStudentIds.ts < ./samples/student-ids.csv > ./samples/student-ids.json
+    ./script/importStudentIds.ts < ./samples/student-ids.csv > ./samples/student-ids.json
     ```
 
     See an example of the result [here](./samples/student-ids.json).
@@ -15,7 +15,7 @@
 3. We generate the token denoms and target addresses with something like:
 
     ```sh
-    ./scripts/generateStudents.ts < ./samples/student-ids.json > ./samples/student-infos.json
+    ./script/generateStudents.ts < ./samples/student-ids.json > ./samples/student-infos.json
     ```
 
 4. This creates a JSON file of the type, from an example [here](./samples/student-infos.json):
@@ -36,7 +36,7 @@
 5. To send an email to each student, and need the info in a CSV format, you can run something:
 
     ```sh
-    ./scripts/reportStudents.ts < ./samples/student-infos.json > ./samples/student-infos.csv
+    ./script/reportStudents.ts < ./samples/student-infos.json > ./samples/student-infos.csv
     ```
 
     See a sample [here](./samples/student-infos.csv).
@@ -56,5 +56,5 @@
 8. When you want to collect the statuses, to inform the students about the outcome, you can run the same report command, and obtain a report like the example [here](./samples/student-infos.csv):
 
     ```sh
-    ./scripts/reportStudents.ts < ./samples/student-infos.json > ./samples/student-infos.csv
+    ./script/reportStudents.ts < ./samples/student-infos.json > ./samples/student-infos.csv
     ```

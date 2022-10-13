@@ -1,4 +1,4 @@
-#!/usr/bin/env npx ts-node
+#!/usr/bin/env ts-node
 
 import { toAscii, toHex } from "@cosmjs/encoding"
 import { Hash } from "fast-sha256"
