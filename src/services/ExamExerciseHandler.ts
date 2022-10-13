@@ -41,10 +41,12 @@ export default class ExamExerciseHandler {
         // check students 
         const students = await checkOnStudentsInParallel([this.config.nodeConfig], studentInfos);
 
-        await this.updateStudentsResults(students);
+        return await this.compareAndUpdateResults(students);
     }
 
-    async updateStudentsResults(students: StudentInfo[]) {
+    async compareAndUpdateResults(students: StudentInfo[]) {
+        console.log('[ExamExerciseHandler] compare and update students results');
+
         const users = await this.userRepository.getAll();
         const examExercise: HackerrankTest = await this.getExamExercise();
         const testResults = await this.testResultRepository.getAllByTestId(examExercise.testId);
@@ -63,7 +65,7 @@ export default class ExamExerciseHandler {
     }
 
     async getExamExercise(): Promise<HackerrankTest> {
-        console.log('[ExamExerciseHandler] get hackerrank test');
+        console.log('[ExamExerciseHandler] get exam exercise test');
 
         let hackerrankTest = await this.hackerrankTestRepository.getByHackerrankId(this.config.examExercise.id);
 
