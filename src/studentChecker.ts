@@ -1,7 +1,7 @@
+import { sha256 } from "@cosmjs/crypto"
 import { toAscii, toHex } from "@cosmjs/encoding"
 import { Coin, StargateClient } from "@cosmjs/stargate"
 import { assert } from "console"
-import { Hash } from "fast-sha256"
 import { StudentInfo } from "./studentGenerator"
 
 export type NodeConfig = {
@@ -25,12 +25,10 @@ export const checkOnStudent = async (config: NodeConfig): Promise<StudentChecker
             .map((coin: Coin) => coin.denom.toLowerCase())
             .filter((denom: string) => denom.startsWith("ibc/"))
         return ibcDenoms.some((denom: string) => {
-            const hasher: Hash = new Hash()
             let channelId: number = config.channelRange.min
             do {
-                hasher.reset()
-                hasher.update(toAscii(`transfer/channel-${channelId}/${info.homeDenom}`))
-                if (denom == `ibc/${toHex(hasher.digest())}`) return true
+                const hash: Uint8Array = sha256(toAscii(`transfer/channel-${channelId}/${info.homeDenom}`))
+                if (denom == `ibc/${toHex(hash)}`) return true
             } while (++channelId <= config.channelRange.max)
             return false
         })

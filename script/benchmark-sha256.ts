@@ -1,17 +1,13 @@
 #!/usr/bin/env ts-node
 
 import { toAscii, toHex } from "@cosmjs/encoding"
-import { Hash } from "fast-sha256"
+import { sha256 } from "@cosmjs/crypto"
 
-const hasher = new Hash()
 let runCount = 10_000
-
 const beforeMilliSec = new Date().getTime()
 
 do {
-    hasher.reset()
-    hasher.update(toAscii(`transfer/channel-${runCount}/token`))
-    const hash = toHex(hasher.digest())
+    const hash = toHex(sha256(toAscii(`transfer/channel-${runCount}/token`)))
     // console.log(hash)
 } while (0 < --runCount)
 
