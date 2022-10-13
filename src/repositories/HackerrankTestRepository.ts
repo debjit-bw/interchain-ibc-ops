@@ -26,6 +26,6 @@ export default class HackerrankTestRepository {
         return this.hackerrankTests()
             .where('hackerrank_id', id)
             .first()
-            .then(data => new HackerrankTest(data.test_id, data.test_name, data.hackerrank_id, data.due_date));
+            .then(data => data ? new HackerrankTest(data.test_id, data.test_name, data.hackerrank_id, data.due_date) : null);
     }
 }
