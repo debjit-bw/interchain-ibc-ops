@@ -2,7 +2,7 @@ import HackerrankTest from "../database/models/HackerrankTest";
 import HackerrankTestRepository from "../repositories/HackerrankTestRepository";
 import TestResultRepository from "../repositories/TestResultRepository";
 import UserRepository from "../repositories/UserRepository";
-import studentInfos from "../../samples/student-infos-positive.json";
+import studentInfos from "../../samples/student-infos.json";
 import { StudentInfo } from "../studentGenerator";
 import { checkOnStudentsInParallel, NodeConfig } from "../studentChecker";
 
