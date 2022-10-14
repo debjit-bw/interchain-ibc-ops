@@ -33,7 +33,7 @@
     ]
     ```
 
-5. To send an email to each student, and need the info in a CSV format, you can run something:
+5. To send an email to each student, and need the info in a CSV format, you can run something like:
 
     ```sh
     ./script/reportStudents.ts < ./samples/student-infos.json > ./samples/student-infos.csv
@@ -58,3 +58,23 @@
     ```sh
     ./script/reportStudents.ts < ./samples/student-infos.json > ./samples/student-infos.csv
     ```
+
+## As a student
+
+If you are a student, have your parameters and want to check for your own case only, just run something like:
+
+```sh
+$ npx ts-node ./script/./script/checkMe.ts token cosmos1m5gjpnm6fjljvxfktjkvjumk79xdrckmrckypk
+```
+
+In the case above, this returns:
+
+```txt
+Found it!
+```
+
+In failing cases, it returns:
+
+```txt
+Not found
+```
