@@ -16,19 +16,15 @@ export type StudentChecker = (info: StudentInfo) => Promise<boolean>
 export type StudentsChecker = (config: NodeConfig, infos: StudentInfo[]) => Promise<StudentInfo[]>
 
 export const checkOnStudent = async (config: NodeConfig): Promise<StudentChecker> => {
-    console.log('[StudentChecker] check on single student');
     const client: StargateClient = await StargateClient.connect(config.rpc)
-    console.log('[StudentChecker] stargate client connected');
     return async (info: StudentInfo): Promise<boolean> => {
-        console.log(`[StudentChecker] checking student ${JSON.stringify(info)}`);
         if (info.received) return true
         const coins: readonly Coin[] = await client.getAllBalances(info.addressRecipient)
-        console.log(`[StudentChecker] retrieved all balances ${JSON.stringify(coins)}`);
         const ibcDenoms: string[] = coins
             .filter((coin: Coin) => 0 < parseInt(coin.amount, 10))
             .map((coin: Coin) => coin.denom.toLowerCase())
             .filter((denom: string) => denom.startsWith("ibc/"))
-        return ibcDenoms.some((denom: string) => {
+        const result = ibcDenoms.some((denom: string) => {
             const hasher: Hash = new Hash()
             let channelId: number = config.channelRange.min
             do {
@@ -38,18 +34,19 @@ export const checkOnStudent = async (config: NodeConfig): Promise<StudentChecker
             } while (++channelId <= config.channelRange.max)
             return false
         })
+        return result
     }
 }
 
 export const checkOnStudents = async (config: NodeConfig, infos: StudentInfo[]): Promise<StudentInfo[]> => {
-    console.log('[StudentChecker] check on students', config, infos);
     const checker: StudentChecker = await checkOnStudent(config)
     const result: StudentInfo[] = []
     let index = 0
     while (index < infos.length) {
+        const received = await checker(infos[index]);
         result.push(
             Object.assign<StudentInfo, StudentInfo, Partial<StudentInfo>>({} as StudentInfo, infos[index], {
-                received: await checker(infos[index]),
+                received
             }),
         )
         index++
@@ -61,7 +58,6 @@ export const checkOnStudentsInParallel = async (
     configs: NodeConfig[],
     infos: StudentInfo[],
 ): Promise<StudentInfo[]> => {
-    console.log('[StudentChecker] check on students in parallel');
     const chunkSize = Math.ceil(infos.length / configs.length)
     const filedInfos: StudentInfo[][] = []
     for (let index = 0; index < infos.length; index += chunkSize) {
