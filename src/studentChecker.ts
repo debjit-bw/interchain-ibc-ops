@@ -32,7 +32,6 @@ export const checkOnStudent = async (config: NodeConfig): Promise<StudentChecker
             } while (++channelId <= config.channelRange.max)
             return false
         })
-        return result
     }
 }
 
@@ -41,10 +40,10 @@ export const checkOnStudents = async (config: NodeConfig, infos: StudentInfo[]):
     const result: StudentInfo[] = []
     let index = 0
     while (index < infos.length) {
-        const received = await checker(infos[index]);
+        const received = await checker(infos[index])
         result.push(
             Object.assign<StudentInfo, StudentInfo, Partial<StudentInfo>>({} as StudentInfo, infos[index], {
-                received
+                received,
             }),
         )
         index++
