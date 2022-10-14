@@ -19,7 +19,7 @@ export async function studentGenerator(studentIds: StudentId[]): Promise<Student
             studentId: studentIds[index],
             mnemonic: wallet.mnemonic,
             addressRecipient: accounts[0].address,
-            homeDenom: `stake${accounts[0].address.replace("cosmos", "")}`,
+            homeDenom: accounts[0].address.replace("cosmos", "token"),
             received: false,
         })
         index++
