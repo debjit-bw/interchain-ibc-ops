@@ -62,6 +62,8 @@ export default class ExamExerciseHandler {
 
             if (!examExerciseResult || examExerciseResult.testResult != 1) {
                 await this.testResultRepository.create(user.id, examExercise.testId, 1, new Date());
+            } else {
+                console.log(`[ExamExerciseHandler] exam exercise result already stored for user ${student.studentId}`);
             }
         }
     }
