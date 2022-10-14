@@ -61,7 +61,7 @@ export default class ExamExerciseHandler {
             const examExerciseResult = testResults.find(result => result.userId === user.id);
 
             if (!examExerciseResult || examExerciseResult.testResult != 1) {
-                this.testResultRepository.create(user.id, examExercise.testId, 1, new Date());
+                await this.testResultRepository.create(user.id, examExercise.testId, 1, new Date());
             }
         }
     }
