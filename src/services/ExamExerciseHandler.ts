@@ -2,7 +2,7 @@ import HackerrankTest from "../database/models/HackerrankTest";
 import HackerrankTestRepository from "../repositories/HackerrankTestRepository";
 import TestResultRepository from "../repositories/TestResultRepository";
 import UserRepository from "../repositories/UserRepository";
-import studentInfos from "../../samples/student-infos.json";
+import studentInfos from "../../config.json";
 import { StudentInfo } from "../studentGenerator";
 import { checkOnStudentsInParallel, NodeConfig } from "../studentChecker";
 
@@ -38,7 +38,9 @@ export default class ExamExerciseHandler {
 
         const students = await checkOnStudentsInParallel([this.config.nodeConfig], studentInfos);
 
-        return await this.compareAndUpdateResults(students);
+        console.log('[ExamExerciseHandler] students retrieved', JSON.stringify(students));
+
+        await this.compareAndUpdateResults(students);
     }
 
     async compareAndUpdateResults(students: StudentInfo[]) {
@@ -54,10 +56,14 @@ export default class ExamExerciseHandler {
             console.log(`[ExamExerciseHandler] exam exercise result received for user ${student.studentId}`);
 
             const user = users.find(user => user.token === student.studentId);
+            if (!user) continue;
+
             const examExerciseResult = testResults.find(result => result.userId === user.id);
 
             if (!examExerciseResult || examExerciseResult.testResult != 1) {
-                this.testResultRepository.create(user.id, examExercise.testId, 1, new Date());
+                await this.testResultRepository.create(user.id, examExercise.testId, 1, new Date());
+            } else {
+                console.log(`[ExamExerciseHandler] exam exercise result already stored for user ${student.studentId}`);
             }
         }
     }

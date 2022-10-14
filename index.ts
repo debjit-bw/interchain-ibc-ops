@@ -24,18 +24,22 @@ const hackerrankTestRepository = new HackerrankTestRepository();
 const testResultRepository = new TestResultRepository();
 const examExerciseHandler = new ExamExerciseHandler(config, userRepository, hackerrankTestRepository, testResultRepository);
 
-const errorHandler = (error: Error) => ({
-    statusCode: 500,
-    headers: { "Access-Control-Allow-Origin": "*" },
-    body: JSON.stringify({ name: error.name, message: error.message })
-});
+const errorHandler = (error: Error) => {
+    return {
+        statusCode: 500,
+        headers: { "Access-Control-Allow-Origin": "*" },
+        body: JSON.stringify({ name: error.name, message: error.message })
+    }
+}
 
-const successHandler = () => ({
-    statusCode: 200,
-    headers: { "Access-Control-Allow-Origin": "*" }
-});
+const successHandler = () => {
+    return {
+        statusCode: 200,
+        headers: { "Access-Control-Allow-Origin": "*" }
+    }
+}
 
-export const lambdaHandler = async (event: any, context: any) => {
+export const handler = async (event: any, context: any) => {
     console.log(`Event: ${JSON.stringify(event, null, 2)}`);
     console.log(`Context: ${JSON.stringify(context, null, 2)}`);
     return examExerciseHandler.updateExamExerciseState().catch(errorHandler).then(successHandler);

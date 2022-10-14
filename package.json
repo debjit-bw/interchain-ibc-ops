@@ -4,7 +4,11 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prebuild": "rm -rf ./dist/",
+    "build": "tsc",
+    "prebuild:prod": "rm dist.zip && npm run build",
+    "build:prod": "zip -r dist.zip dist/* node_modules"
   },
   "author": "",
   "license": "ISC",

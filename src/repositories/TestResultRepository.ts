@@ -19,14 +19,14 @@ export default class TestResultRepository {
         return this.testResults()
             .where('test_result_id', id)
             .first()
-            .then(data => new TestResult(data.test_result_id, data.user_id, data.test_id, data.test_result, data.date));;
+            .then(data => data ? new TestResult(data.test_result_id, data.user_id, data.test_id, data.test_result, data.date) : null);
     }
 
     getAllByTestId(id: number): Promise<TestResult[]> {
         console.log('[TestResultRepository] get all test results with test id ' + id);
         return this.testResults()
             .where('test_id', id)
-            .then(data => data.map(item => new TestResult(item.test_result_id, item.user_id, item.test_id, item.test_result, item.date)));
+            .then(data => data.map(item => item ? new TestResult(item.test_result_id, item.user_id, item.test_id, item.test_result, item.date) : null));
     }
 
     create(
