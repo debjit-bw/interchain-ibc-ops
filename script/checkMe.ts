@@ -4,6 +4,7 @@ import { existsSync } from "fs"
 import { config } from "dotenv"
 import path from "path"
 import { checkOnStudent, NodeConfig, StudentChecker } from "../src/studentChecker"
+import { StudentResult } from "../src/studentGenerator"
 import _ from "../environment"
 
 if (process.argv.length < 4) {
@@ -31,14 +32,19 @@ async function runAll() {
         },
     }
     const checker: StudentChecker = await checkOnStudent(config1)
-    const myResult: boolean = await checker({
+    const myResult: StudentResult = await checker({
         studentId: "me",
         mnemonic: "",
         homeDenom: homeDenom,
         addressRecipient: recipient,
-        received: false,
+        result: { found: false, channelId: undefined },
     })
-    console.log(myResult ? `${colors.green}Found it!` : `${colors.red}Not found`, colors.reset)
+    console.log(
+        myResult.found
+            ? `${colors.green}Found it at channel ${myResult.channelId}!`
+            : `${colors.red}Not found`,
+        colors.reset,
+    )
 }
 
 runAll()

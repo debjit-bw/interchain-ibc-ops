@@ -1,12 +1,16 @@
 import { DirectSecp256k1HdWallet } from "@cosmjs/proto-signing"
 
 export type StudentId = string
+export type StudentResult = {
+    found: boolean
+    channelId: number | undefined
+}
 export type StudentInfo = {
     studentId: StudentId
     mnemonic: string
     addressRecipient: string
     homeDenom: string
-    received: boolean
+    result: StudentResult
 }
 
 export async function studentGenerator(studentIds: StudentId[]): Promise<StudentInfo[]> {
@@ -20,7 +24,7 @@ export async function studentGenerator(studentIds: StudentId[]): Promise<Student
             mnemonic: wallet.mnemonic,
             addressRecipient: accounts[0].address,
             homeDenom: accounts[0].address.replace("cosmos", "token"),
-            received: false,
+            result: { found: false, channelId: undefined },
         })
         index++
     }

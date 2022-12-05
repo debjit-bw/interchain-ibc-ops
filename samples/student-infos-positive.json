@@ -4,13 +4,13 @@
         "mnemonic": "",
         "addressRecipient": "cosmos1m5gjpnm6fjljvxfktjkvjumk79xdrckmrckypk",
         "homeDenom": "token",
-        "received": false
+        "result": { "found": false }
     },
     {
         "studentId": "10349c8f-b2f1-4179-89ed-0b9fac127a98",
         "mnemonic": "",
         "addressRecipient": "cosmos1m5gjpnm6fjljvxfktjkvjumk79xdrckmrckypk",
         "homeDenom": "testproof",
-        "received": false
+        "result": { "found": false }
     }
 ]

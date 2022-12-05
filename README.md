@@ -27,7 +27,7 @@
             "mnemonic": "lobster shock script absurd assume near charge law unfair lift just also drill damp music accuse salad rather include relief drive special child coin",
             "addressRecipient": "cosmos19vc35uv05mddlhqlkn8xpg54vsm04rkaka6hhk",
             "homeDenom": "stake19vc35uv05mddlhqlkn8xpg54vsm04rkaka6hhk",
-            "received": false
+            "result": { "found": false, "channelId": undefined }
         },
         ...
     ]
@@ -51,7 +51,7 @@
 
     If you want to see a file that gives positive results, do `< ./samples/student-infos-positive.json`.
 
-7. After that, the information has updated `received` statuses.
+7. After that, the information has updated `result` statuses.
 
 8. When you want to collect the statuses, to inform the students about the outcome, you can run the same report command, and obtain a report like the example [here](./samples/student-infos.csv):
 
@@ -64,13 +64,13 @@
 If you are a student, have your parameters and want to check for your own case only, just run something like:
 
 ```sh
-$ npx ts-node ./script/./script/checkMe.ts token cosmos1m5gjpnm6fjljvxfktjkvjumk79xdrckmrckypk
+$ npx ts-node ./script/checkMe.ts token cosmos1m5gjpnm6fjljvxfktjkvjumk79xdrckmrckypk
 ```
 
 In the case above, this returns:
 
 ```txt
-Found it!
+Found it at channel 655!
 ```
 
 In failing cases, it returns:
